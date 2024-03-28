@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ControlodeContactos.Models;
+using ControlodeContactos.Repositorio;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ControlodeContactos.Controllers
 {
     public class ContactoController : Controller
     {
+        private readonly IContactoRepositorio _contactoRepositorio;
+        public ContactoController(IContactoRepositorio contactoRepositorio)
+        {
+            _contactoRepositorio = contactoRepositorio;
+        }
+
         public IActionResult Index()
         {
-            return View();
+         var contactos = _contactoRepositorio.BuscarTodos();
+
+            return View(contactos);
         }
 
         public IActionResult Criar()
@@ -22,6 +32,12 @@ namespace ControlodeContactos.Controllers
         public IActionResult ApagarConfirmacao()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult Criar(ContactoModel contacto)
+        {
+            _contactoRepositorio.Adicionar(contacto);
+            return RedirectToAction("Index");
         }
     }
 }

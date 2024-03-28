@@ -1,4 +1,5 @@
 using ControlodeContactos.Data;
+using ControlodeContactos.Repositorio;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<BDContext>(Options =>
 {
     Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IContactoRepositorio, ContactoRepositorio>();
+
 
 var app = builder.Build();
 
